@@ -29,3 +29,16 @@ Content-Type: application/json
 {
   "prompt": "react native, futuro, expo"
 }
+
+### 
+
+# @name generate-ai-completion
+
+POST {{baseUrl}}/ai/complete
+Content-Type: application/json
+
+{
+  "videoId": "{{videoId}}",
+  "temperature": 0.5,
+  "template": "Gere um resumo sucinto da transcrição do vídeo informada a seguir em pt-BR: '''{transcription}'''"
+}

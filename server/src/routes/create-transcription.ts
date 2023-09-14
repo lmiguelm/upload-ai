@@ -16,10 +16,9 @@ export async function createTranscriptionRoute(app: FastifyInstance) {
 
     const bodySchema = z.object({
       prompt: z.string(),
-      temperature: z.number().optional(),
     });
 
-    const { prompt, temperature } = bodySchema.parse(request.body);
+    const { prompt } = bodySchema.parse(request.body);
 
     const video = await prisma.video.findUniqueOrThrow({
       where: {
@@ -35,7 +34,7 @@ export async function createTranscriptionRoute(app: FastifyInstance) {
       model: "whisper-1",
       language: "pt",
       response_format: "json",
-      temperature,
+      temperature: 0,
       prompt,
     });
 
