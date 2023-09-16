@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:3333
+@baseUrl = http://localhost:3001
 @videoId = d010cfd0-c198-4932-a49b-9d996b8471ce
 
 # @name get-prompts
@@ -40,5 +40,5 @@ Content-Type: application/json
 {
   "videoId": "{{videoId}}",
   "temperature": 0.5,
-  "template": "Gere um resumo sucinto da transcrição do vídeo informada a seguir em pt-BR: '''{transcription}'''"
+  "prompt": "Gere um resumo sucinto da transcrição do vídeo informada a seguir em pt-BR: '''{transcription}'''"
 }

@@ -1,3 +1,4 @@
+import cors from "@fastify/cors";
 import { fastify } from "fastify";
 
 import { ENVIRONMENTS } from "./config/environments";
@@ -8,7 +9,7 @@ import { getAllPromptsRoute } from "./routes/get-all-prompts";
 import { uploadVideoRoute } from "./routes/upload-video";
 
 const app = fastify();
-
+app.register(cors, { origin: "*" });
 app.register(getAllPromptsRoute);
 app.register(uploadVideoRoute);
 app.register(createTranscriptionRoute);
