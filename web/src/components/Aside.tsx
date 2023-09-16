@@ -1,5 +1,4 @@
-import { Upload, Wand2 } from "lucide-react";
-import { InputVideo } from "./InputVideo";
+import { Wand2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 
@@ -12,35 +11,16 @@ import {
 } from "./ui/select";
 
 import { useState } from "react";
+import { VideoInputForm } from "./VideoInputForm";
 import { Separator } from "./ui/separator";
 import { Slider } from "./ui/slider";
-import { Textarea } from "./ui/textarea";
 
 export function Aside() {
   const [temperature, setTemperature] = useState(0.5);
 
   return (
     <aside className="w-80 max-sm:w-full space-y-6">
-      <form className="space-y-6">
-        <InputVideo />
-
-        <Separator />
-
-        <div className="space-y-2">
-          <Label htmlFor="transcription-prompt">Prompt de transcrição</Label>
-
-          <Textarea
-            id="transcription-prompt"
-            className="h-20 resize-none leading-relaxed"
-            placeholder="Inclua palavras-chave mencionadas no vídeo separadas por vírgula (.)"
-          />
-        </div>
-
-        <Button type="submit" className="w-full gap-2">
-          Carregar vídeo
-          <Upload className="h-4 w-4" />
-        </Button>
-      </form>
+      <VideoInputForm />
 
       <Separator />
 

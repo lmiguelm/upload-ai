@@ -9,6 +9,7 @@ export function App() {
 
       <main className="flex-1 p-6 flex gap-6 max-sm:flex-col-reverse max-sm:items-center">
         <Content />
+
         <Aside />
       </main>
     </div>
