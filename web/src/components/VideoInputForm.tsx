@@ -1,16 +1,70 @@
+import { useApp } from "@/hooks/useApp";
+import { api } from "@/lib/axios";
 import { getFFmpeg } from "@/lib/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
 import { Upload } from "lucide-react";
-import { ChangeEvent, FormEvent, useMemo, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { InputVideo } from "./InputVideo";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 import { Textarea } from "./ui/textarea";
 
+type Status =
+  | "waiting"
+  | "converting"
+  | "uploading"
+  | "generating"
+  | "success"
+  | "error";
+
+type StatusFeedback = {
+  [status in Status]: {
+    message: string;
+    Icon?: () => React.ReactNode;
+  };
+};
+
+const statusFeedbacks: StatusFeedback = {
+  waiting: {
+    message: "Carregar vídeo",
+    Icon: () => <Upload className="w-4 h-4" />,
+  },
+  converting: {
+    message: "Convertendo...",
+  },
+  generating: {
+    message: "Transcrevendo...",
+  },
+  uploading: {
+    message: "Carregando",
+  },
+  success: {
+    message: "Sucesso!",
+  },
+  error: {
+    message: "Erro!",
+  },
+};
+
 export function VideoInputForm() {
-  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const { onVideoUploaded } = useApp();
+
   const promptInputRef = useRef<HTMLTextAreaElement>(null);
+
+  const [status, setStatus] = useState<Status>("waiting");
+  const [videoFile, setVideoFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (!!videoFile) setStatus("waiting");
+  }, [videoFile]);
 
   function handleFileSelected(event: ChangeEvent<HTMLInputElement>) {
     const { files } = event.currentTarget;
@@ -60,17 +114,36 @@ export function VideoInputForm() {
   }
 
   async function handleUploadVideo(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+    try {
+      event.preventDefault();
 
-    const prompt = promptInputRef.current?.value;
+      const prompt = promptInputRef.current?.value;
 
-    if (!videoFile) {
-      return;
+      if (!videoFile) {
+        return;
+      }
+
+      setStatus("converting");
+      const audio = await convertVideoToAudio(videoFile);
+
+      const data = new FormData();
+      data.append("file", audio);
+
+      setStatus("uploading");
+      const videoResponse = await api.post("/videos", data);
+
+      const videoId = videoResponse.data.id;
+
+      setStatus("generating");
+      await api.post(`/videos/${videoId}/transcription`, { prompt });
+
+      setStatus("success");
+
+      onVideoUploaded(videoId);
+    } catch (error) {
+      setVideoFile(null);
+      setStatus("error");
     }
-
-    const audio = await convertVideoToAudio(videoFile);
-
-    console.log(audio, prompt);
   }
 
   const previewUrl = useMemo(() => {
@@ -80,6 +153,8 @@ export function VideoInputForm() {
 
     return URL.createObjectURL(videoFile);
   }, [videoFile]);
+
+  const { Icon, message } = statusFeedbacks[status];
 
   return (
     <form onSubmit={handleUploadVideo} className="space-y-6">
@@ -98,9 +173,15 @@ export function VideoInputForm() {
         />
       </div>
 
-      <Button type="submit" className="w-full gap-2">
-        Carregar vídeo
-        <Upload className="h-4 w-4" />
+      <Button
+        type="submit"
+        disabled={status != "waiting"}
+        data-success={status === "success"}
+        data-error={status === "error"}
+        className="w-full gap-2 data-[success=true]:bg-emerald-400 data-[error=true]:bg-destructive"
+      >
+        {message}
+        {Icon && <Icon />}
       </Button>
     </form>
   );

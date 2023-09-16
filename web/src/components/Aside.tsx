@@ -10,13 +10,15 @@ import {
   SelectValue,
 } from "./ui/select";
 
-import { useState } from "react";
+import { useApp } from "@/hooks/useApp";
+import { PromptSelect } from "./PromptSelect";
 import { VideoInputForm } from "./VideoInputForm";
 import { Separator } from "./ui/separator";
 import { Slider } from "./ui/slider";
 
 export function Aside() {
-  const [temperature, setTemperature] = useState(0.5);
+  const { temperature, onTemperatureChanged, isLoading, handleSubmit } =
+    useApp();
 
   return (
     <aside className="w-80 max-sm:w-full space-y-6">
@@ -24,20 +26,10 @@ export function Aside() {
 
       <Separator />
 
-      <form className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-2">
           <Label>Prompt</Label>
-
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Selecione um prompt..." />
-            </SelectTrigger>
-
-            <SelectContent>
-              <SelectItem value="title">Título do YouTube</SelectItem>
-              <SelectItem value="description">Descrição do YouTube</SelectItem>
-            </SelectContent>
-          </Select>
+          <PromptSelect />
         </div>
 
         <div className="space-y-2">
@@ -75,7 +67,7 @@ export function Aside() {
             max={1}
             step={0.1}
             value={[temperature]}
-            onValueChange={([value]) => setTemperature(value)}
+            onValueChange={([value]) => onTemperatureChanged(value)}
           />
 
           <span className="block text-xs text-muted-foreground italic leading-relaxed">
@@ -86,8 +78,9 @@ export function Aside() {
 
         <Separator />
 
-        <Button className="w-full gap-2" type="submit">
-          Executar <Wand2 className="w-4 h-4" />
+        <Button disabled={isLoading} className="w-full gap-2" type="submit">
+          {!isLoading && <Wand2 className="w-4 h-4" />}
+          {isLoading ? "Gerando..." : "Executar"}
         </Button>
       </form>
     </aside>
