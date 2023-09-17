@@ -17,8 +17,6 @@ app.register(generateAiCompletionRoute);
 
 app
   .listen({
-    port: ENVIRONMENTS.APPLICATION_PORT,
+    port: ENVIRONMENTS.PORT,
   })
-  .then(() =>
-    console.log("Server listening on port:", ENVIRONMENTS.APPLICATION_PORT)
-  );
+  .then(() => console.log("Server listening on port:", ENVIRONMENTS.PORT));

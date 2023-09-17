@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const ENVIRONMENTS = {
-  APPLICATION_PORT: Number(process.env.APPLICATION_PORT),
+  PORT: Number(process.env.PORT),
   DATABASE_URL: String(process.env.DATABASE_URL),
   OPEN_IA_KEY: String(process.env.OPEN_IA_KEY),
 };
