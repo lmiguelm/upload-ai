@@ -18,5 +18,6 @@ app.register(generateAiCompletionRoute);
 app
   .listen({
     port: ENVIRONMENTS.PORT,
+    host: ENVIRONMENTS.RENDER ? `0.0.0.0` : `localhost`,
   })
   .then(() => console.log("Server listening on port:", ENVIRONMENTS.PORT));
