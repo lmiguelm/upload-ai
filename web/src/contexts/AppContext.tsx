@@ -29,7 +29,7 @@ export function AppProvider({ children }: Props) {
     completion,
     isLoading,
   } = useCompletion({
-    api: "http://localhost:3001/ai/complete",
+    api: `${import.meta.env.VITE_API_URL}/ai/complete`,
     body: {
       videoId,
       temperature,
