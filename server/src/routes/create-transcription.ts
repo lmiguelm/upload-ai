@@ -1,4 +1,5 @@
 import { FastifyInstance } from "fastify";
+import fs from "node:fs";
 import { z } from "zod";
 
 import { createReadStream } from "node:fs";
@@ -46,6 +47,18 @@ export async function createTranscriptionRoute(app: FastifyInstance) {
       },
       data: {
         transcription: response.text,
+      },
+    });
+
+    // remove file after generate tr
+    fs.unlinkSync(video.path);
+
+    await prisma.video.update({
+      data: {
+        path: "",
+      },
+      where: {
+        id: videoId,
       },
     });
 

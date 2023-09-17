@@ -1,7 +1,6 @@
 import { OpenAIStream, streamToResponse } from "ai";
-import { z } from "zod";
-
 import { FastifyInstance } from "fastify";
+import { z } from "zod";
 
 import { openai } from "../lib/openai";
 import { prisma } from "../lib/prisma";
