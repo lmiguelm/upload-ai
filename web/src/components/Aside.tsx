@@ -17,16 +17,21 @@ import { Separator } from "./ui/separator";
 import { Slider } from "./ui/slider";
 
 export function Aside() {
-  const { temperature, onTemperatureChanged, isLoading, handleSubmit } =
-    useApp();
+  const {
+    temperature,
+    onTemperatureChanged,
+    isLoading,
+    handleSubmit,
+    videoId,
+  } = useApp();
 
   return (
-    <aside className="w-80 max-sm:w-full space-y-6">
+    <aside className="w-80 max-sm:w-full space-y-5">
       <VideoInputForm />
 
       <Separator />
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
           <Label>Prompt</Label>
           <PromptSelect />
@@ -78,7 +83,11 @@ export function Aside() {
 
         <Separator />
 
-        <Button disabled={isLoading} className="w-full gap-2" type="submit">
+        <Button
+          disabled={isLoading || !videoId}
+          className="w-full gap-2"
+          type="submit"
+        >
           {!isLoading && <Wand2 className="w-4 h-4" />}
           {isLoading ? "Gerando..." : "Executar"}
         </Button>

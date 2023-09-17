@@ -2,6 +2,7 @@ import { useCompletion, UseCompletionHelpers } from "ai/react";
 import React, { createContext, useCallback, useState } from "react";
 
 type AppContextData = Partial<Omit<UseCompletionHelpers, "completion">> & {
+  videoId: string | null;
   temperature: number;
   isLoading: boolean;
   generated: string;
@@ -19,11 +20,6 @@ type Props = {
 export function AppProvider({ children }: Props) {
   const [videoId, setVideoId] = useState<string | null>(null);
   const [temperature, setTemperature] = useState<number>(0.5);
-
-  console.log({
-    videoId,
-    temperature,
-  });
 
   const {
     input,
@@ -54,6 +50,7 @@ export function AppProvider({ children }: Props) {
   return (
     <AppContext.Provider
       value={{
+        videoId,
         temperature,
         isLoading,
         generated: completion,

@@ -1,10 +1,19 @@
 import { useApp } from "@/hooks/useApp";
+import { Check, Copy } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Textarea } from "./ui/textarea";
 
 export function Content() {
   const { input, handleInputChange, generated } = useApp();
 
-  console.log(generated);
+  const [hasCopied, setHasCopied] = useState<boolean>(false);
+
+  useEffect(() => {}, []);
+
+  function handleCopy() {
+    navigator.clipboard.writeText(generated);
+    setHasCopied(true);
+  }
 
   return (
     <div className="flex flex-col flex-1 gap-4">
@@ -16,12 +25,31 @@ export function Content() {
           onChange={handleInputChange}
         />
 
-        <Textarea
-          readOnly
-          className="resize-none p-5 leading-relaxed"
-          placeholder="Resultado gerado pela IA..."
-          value={generated}
-        />
+        <div className="flex relative">
+          <a
+            href="#"
+            onClick={handleCopy}
+            className="absolute right-5 top-5 transition-colors"
+          >
+            <div
+              data-success={hasCopied}
+              className="border data-[success=true]:bg-emerald-400 hover:bg-current/5 rounded p-1"
+            >
+              {hasCopied ? (
+                <Check className="w-3 h-3" />
+              ) : (
+                <Copy className="w-3 h-3" />
+              )}
+            </div>
+          </a>
+
+          <Textarea
+            readOnly
+            className="resize-none p-5 leading-relaxed"
+            placeholder="Resultado gerado pela IA..."
+            value={generated}
+          />
+        </div>
       </div>
 
       <p className="text-sm text-muted-foreground max-sm:text-center">

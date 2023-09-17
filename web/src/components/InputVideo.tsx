@@ -1,9 +1,10 @@
-import { FileVideo } from "lucide-react";
+import { FileVideo, X } from "lucide-react";
 import { ComponentProps } from "react";
 import { Label } from "./ui/label";
 
 type Props = ComponentProps<"input"> & {
   previewUrl: string | null;
+  onRemoveFile: () => void;
 };
 
 export function InputVideo(props: Props) {
@@ -14,11 +15,21 @@ export function InputVideo(props: Props) {
         htmlFor="video"
       >
         {!!props.previewUrl ? (
-          <video
-            src={props.previewUrl}
-            controls={false}
-            className="pointer-events-none absolute inset-0"
-          />
+          <div>
+            <a
+              className="absolute right-0 top-0 z-10 hover:bg-destructive/50"
+              href="#"
+              onClick={props.onRemoveFile}
+            >
+              <X className="w-4 h-4 bg-destructive" />
+            </a>
+
+            <video
+              src={props.previewUrl}
+              controls={false}
+              className="pointer-events-none absolute inset-0"
+            />
+          </div>
         ) : (
           <>
             <FileVideo className="h-4 w-4" />

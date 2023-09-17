@@ -11,6 +11,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+
 import { InputVideo } from "./InputVideo";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
@@ -63,7 +64,11 @@ export function VideoInputForm() {
   const [videoFile, setVideoFile] = useState<File | null>(null);
 
   useEffect(() => {
-    if (!!videoFile) setStatus("waiting");
+    if (!!videoFile) {
+      setStatus("waiting");
+    }
+
+    onVideoUploaded("");
   }, [videoFile]);
 
   function handleFileSelected(event: ChangeEvent<HTMLInputElement>) {
@@ -158,7 +163,11 @@ export function VideoInputForm() {
 
   return (
     <form onSubmit={handleUploadVideo} className="space-y-6">
-      <InputVideo previewUrl={previewUrl} onChange={handleFileSelected} />
+      <InputVideo
+        previewUrl={previewUrl}
+        onChange={handleFileSelected}
+        onRemoveFile={() => setVideoFile(null)}
+      />
 
       <Separator />
 

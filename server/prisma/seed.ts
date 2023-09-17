@@ -34,7 +34,7 @@ Transcrição:
   await prisma.prompt.create({
     data: {
       title: "Traduzir",
-      template: `Seu papel é traduzir o para português (Brasil) vídeo.
+      template: `Seu papel é traduzir o vídeo para português (Brasil).
   
 Abaixo você receberá uma transcrição desse vídeo, use essa transcrição para gerar a tradução.
 
