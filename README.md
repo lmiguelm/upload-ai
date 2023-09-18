@@ -8,7 +8,7 @@ Faça upload de um vídeo, e com base no prompt informado, a inteligência artif
 
 <br>
 
-🔛 **Teste agora mesmo: [upload-ai](https://upload-ai-pi.vercel.app/).**
+🔛 **Teste agora mesmo: [upload-ai](https://upload-ai-ruddy.vercel.app/).**
 
 ## 🚀 Tecnologias:
 
@@ -17,25 +17,36 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - [Vite](https://vitejs.dev/)
 - [Shadcn](https://ui.shadcn.com/)
 - [TypeScript](https://www.typescriptlang.org/)
+- [Fastify](https://fastify.dev/)
+- [Prisma](https://www.prisma.io/)
+- [OpenAi](https://openai.com/)
+- [ffmpeg wasm](https://ffmpegwasm.netlify.app/docs/overview/)
+- [node-ytdl-core](https://github.com/fent/node-ytdl-core#readme)
 
 <br>
 
 ## 💻 Como usar
 
 - **_Clone o projeto:_**
-  ` git clone https://github.com/lmiguelm/upload-ai.git`
+  - ` git clone https://github.com/lmiguelm/upload-ai.git`
 
 <br>
 
-- **_Entre na pasta do projeto:_**
-  `cd upload-ai`
+- **_Entre nas pastas do projeto:_**
+  - `cd upload-ai/web`
+  - `cd upload-ai/server`
 
 <br>
 
 - **_Baixe as dependências:_**
-  ` yarn || npm install`
+  - ` yarn || npm install`
 
 <br>
 
-- **_Rodar o site:_**
-  `yarn dev || npm run dev`
+- **_Configure as variáveis de ambiente:_**
+  - utilize como base o arquivo `.env.example`
+
+<br>
+
+- **_Rode o site:_**
+  - `yarn dev || npm run dev`
