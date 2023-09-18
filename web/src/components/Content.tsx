@@ -8,7 +8,9 @@ export function Content() {
 
   const [hasCopied, setHasCopied] = useState<boolean>(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setHasCopied(false);
+  }, [generated]);
 
   function handleCopy() {
     navigator.clipboard.writeText(generated);
