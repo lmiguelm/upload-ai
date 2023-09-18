@@ -10,6 +10,8 @@ Faça upload de um vídeo, e com base no prompt informado, a inteligência artif
 
 🔛 **Teste agora mesmo: [upload-ai](https://upload-ai-ruddy.vercel.app/).**
 
+<video src=".github/upload-ai.mp4" controls="controls"></video>
+
 ## 🚀 Tecnologias:
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
@@ -44,7 +46,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 <br>
 
 - **_Configure as variáveis de ambiente:_**
-  - utilize como base o arquivo `.env.example`
+  - Utilize como base o arquivo: `.env.example`
 
 <br>
 
