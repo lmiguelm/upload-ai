@@ -11,8 +11,6 @@ async function main() {
   
 Abaixo você receberá uma transcrição desse vídeo, use essa transcrição para gerar o resumo.
 
-O resumo deve possuir no máximo 80 palavras em primeira pessoa contendo os pontos principais do vídeo.
-
 Use palavras chamativas e que cativam a atenção de quem está lendo.
 
 Além disso, no final da descrição inclua uma lista de 3 até 10 hashtags em letra minúscula contendo palavras-chave do vídeo.
