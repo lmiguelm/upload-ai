@@ -42,3 +42,14 @@ Content-Type: application/json
   "temperature": 0.5,
   "prompt": "Gere um resumo sucinto da transcrição do vídeo informada a seguir em pt-BR: '''{transcription}'''"
 }
+
+### 
+
+# @name download-video-youtube
+
+POST {{baseUrl}}/videos/youtube/download
+Content-Type: application/json
+
+{
+  "url": "https://www.youtube.com/watch?v=rTcS0raY4F0&t=2s&ab_channel=JZReacts"
+}

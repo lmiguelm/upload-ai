@@ -16,13 +16,15 @@ export function InputVideo(props: Props) {
       >
         {!!props.previewUrl ? (
           <div>
-            <a
-              className="absolute right-0 top-0 z-10 hover:bg-destructive/50"
-              href="#"
-              onClick={props.onRemoveFile}
-            >
-              <X className="w-4 h-4 bg-destructive" />
-            </a>
+            {!props.disabled && (
+              <a
+                className="absolute right-0 top-0 z-10 hover:bg-destructive/50"
+                href="#"
+                onClick={props.onRemoveFile}
+              >
+                <X className="w-4 h-4 bg-destructive" />
+              </a>
+            )}
 
             <video
               src={props.previewUrl}

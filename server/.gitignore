@@ -2,4 +2,5 @@ node_modules
 .env
 prisma/*.db
 tmp/*.mp3
+tmp/*.mp4
 dist

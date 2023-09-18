@@ -15,11 +15,21 @@ import React, {
 import { InputVideo } from "./InputVideo";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 import { Separator } from "./ui/separator";
 import { Textarea } from "./ui/textarea";
 
+type InputMethod = "youtube" | "file";
+
 type Status =
   | "waiting"
+  | "downloading"
   | "converting"
   | "uploading"
   | "generating"
@@ -37,6 +47,9 @@ const statusFeedbacks: StatusFeedback = {
   waiting: {
     message: "Carregar vídeo",
     Icon: () => <Upload className="w-4 h-4" />,
+  },
+  downloading: {
+    message: "Baixando...",
   },
   converting: {
     message: "Convertendo...",
@@ -62,14 +75,16 @@ export function VideoInputForm() {
 
   const [status, setStatus] = useState<Status>("waiting");
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [inputMethod, setInputMethod] = useState<InputMethod | null>(null);
+  const [youtubeUrl, setYoutubeUrl] = useState<string>("");
 
   useEffect(() => {
-    if (!!videoFile) {
+    if (status !== "waiting") {
       setStatus("waiting");
     }
 
     onVideoUploaded("");
-  }, [videoFile]);
+  }, [videoFile, inputMethod, youtubeUrl]);
 
   function handleFileSelected(event: ChangeEvent<HTMLInputElement>) {
     const { files } = event.currentTarget;
@@ -118,18 +133,39 @@ export function VideoInputForm() {
     return audioFile;
   }
 
-  async function handleUploadVideo(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     try {
       event.preventDefault();
 
       const prompt = promptInputRef.current?.value;
+      let video = videoFile;
 
-      if (!videoFile) {
+      if (
+        !inputMethod ||
+        (inputMethod === "file" && !videoFile) ||
+        (inputMethod === "youtube" && !youtubeUrl)
+      ) {
         return;
       }
 
+      if (inputMethod === "youtube") {
+        setStatus("downloading");
+
+        const response = await api.post(
+          "/videos/youtube/download",
+          {
+            url: youtubeUrl,
+          },
+          { responseType: "blob" }
+        );
+
+        const videoBlob = new Blob([response.data], { type: "video/mp4" });
+
+        video = new File([videoBlob], "youtube.mp4", { type: "video/mp4" });
+      }
+
       setStatus("converting");
-      const audio = await convertVideoToAudio(videoFile);
+      const audio = await convertVideoToAudio(video!);
 
       const data = new FormData();
       data.append("file", audio);
@@ -162,12 +198,54 @@ export function VideoInputForm() {
   const { Icon, message } = statusFeedbacks[status];
 
   return (
-    <form onSubmit={handleUploadVideo} className="space-y-6">
-      <InputVideo
-        previewUrl={previewUrl}
-        onChange={handleFileSelected}
-        onRemoveFile={() => setVideoFile(null)}
-      />
+    <form onSubmit={handleSubmit} className="space-y-2.5">
+      <div className="space-y-2">
+        <Label>Tipo de entrada</Label>
+
+        <Select
+          disabled={
+            status !== "waiting" && status !== "success" && status !== "error"
+          }
+          onValueChange={(value) => setInputMethod(value as InputMethod)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Selecione uma opção..." />
+          </SelectTrigger>
+
+          <SelectContent>
+            <SelectItem value="file">Upload de Arquivo</SelectItem>
+            <SelectItem value="youtube">Link do YouTube</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {inputMethod === "file" && (
+        <InputVideo
+          previewUrl={previewUrl}
+          onChange={handleFileSelected}
+          onRemoveFile={() => setVideoFile(null)}
+          disabled={
+            status !== "error" && status !== "waiting" && status !== "success"
+          }
+        />
+      )}
+
+      {inputMethod === "youtube" && (
+        <div className="space-y-2">
+          <Label htmlFor="youtube-url">Informe o link do vídeo</Label>
+
+          <Textarea
+            id="youtube-url"
+            className="h-20 resize-none leading-relaxed"
+            placeholder="Ex: https://www.youtube.com/"
+            value={youtubeUrl}
+            onChange={(event) => setYoutubeUrl(event.target.value)}
+            disabled={
+              status !== "error" && status !== "waiting" && status !== "success"
+            }
+          />
+        </div>
+      )}
 
       <Separator />
 
@@ -179,12 +257,20 @@ export function VideoInputForm() {
           id="transcription-prompt"
           className="h-20 resize-none leading-relaxed"
           placeholder="Inclua palavras-chave mencionadas no vídeo separadas por vírgula (.)"
+          disabled={
+            status !== "error" && status !== "waiting" && status !== "success"
+          }
         />
       </div>
 
       <Button
         type="submit"
-        disabled={status != "waiting"}
+        disabled={
+          status != "waiting" ||
+          !inputMethod ||
+          (inputMethod === "file" && !videoFile) ||
+          (inputMethod === "youtube" && !youtubeUrl)
+        }
         data-success={status === "success"}
         data-error={status === "error"}
         className="w-full gap-2 data-[success=true]:bg-emerald-400 data-[error=true]:bg-destructive"

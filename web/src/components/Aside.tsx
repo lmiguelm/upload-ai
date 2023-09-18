@@ -23,6 +23,7 @@ export function Aside() {
     isLoading,
     handleSubmit,
     videoId,
+    input,
   } = useApp();
 
   return (
@@ -84,7 +85,7 @@ export function Aside() {
         <Separator />
 
         <Button
-          disabled={isLoading || !videoId}
+          disabled={isLoading || !videoId || !input}
           className="w-full gap-2"
           type="submit"
         >
