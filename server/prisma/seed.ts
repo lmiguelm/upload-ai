@@ -47,6 +47,20 @@ Transcrição:
 '''`.trim(),
     },
   });
+
+  await prisma.prompt.create({
+    data: {
+      title: "Gerar Título",
+      template: `Seu papel é gerar sugestões de título para o vídeo.
+  
+Abaixo você receberá uma transcrição desse vídeo, use essa transcrição para gerar os títulos com base na transcrição.
+
+Transcrição:
+'''
+{transcription}
+'''`.trim(),
+    },
+  });
 }
 
 main()
