@@ -10,7 +10,7 @@ Faça upload de um vídeo, e com base no prompt informado, a inteligência artif
 
 🔛 **Teste agora mesmo: [upload-ai](https://upload-ai-ruddy.vercel.app/).**
 
-[<video src=".github/upload-ai.mp4" controls="controls"></video>](https://github.com/lmiguelm/upload-ai/assets/47677312/1fe385fd-7e17-4b80-aefe-3e4fc7d29601)
+[<video src=".github/upload-ai.mp4" controls="controls"></video>](https://github.com/lmiguelm/me/assets/47677312/c7e8ba65-f2bd-4304-ae1d-014faad84646)
 
 ## 🚀 Tecnologias:
 
